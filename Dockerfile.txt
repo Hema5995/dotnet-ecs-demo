@@ -1,0 +1,10 @@
+FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2022
+
+WORKDIR C:/inetpub/wwwroot
+
+RUN powershell -NoProfile -Command `
+    Remove-Item -Recurse -Force C:\inetpub\wwwroot\*
+
+COPY publish/ C:/inetpub/wwwroot/
+
+EXPOSE 80
