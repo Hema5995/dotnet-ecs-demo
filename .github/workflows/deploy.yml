@@ -15,7 +15,7 @@ env:
 
 jobs:
   deploy:
-    runs-on: windows-2019   # must match the ltsc2019 tag in the Dockerfile
+    runs-on: windows-2022   # must match the ltsc2019 tag in the Dockerfile
     steps:
       - name: Checkout
         uses: actions/checkout@v4
