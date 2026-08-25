@@ -11,7 +11,7 @@ permissions:
 env:
   ECS_CLUSTER: aspnet-cluster
   ECS_SERVICE: aspnet-service
-  CONTAINER_NAME: dotnet-ecs-demo   # must exactly match the container name in task-definition.json
+  CONTAINER_NAME: aspnet-container   # must exactly match the container name in task-definition.json
 
 jobs:
   deploy:
