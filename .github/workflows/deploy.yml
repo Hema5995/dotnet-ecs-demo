@@ -14,16 +14,20 @@ env:
   CONTAINER_NAME: aspnet-container   # must exactly match the container name in task-definition.json
 
 jobs:
+  oidc-debug:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Debug (OIDC)
+        uses: github/actions-oidc-debugger@main
+        with:
+          audience: sts.amazonaws.com
+    
   deploy:
     runs-on: windows-2022   # must match the ltsc2019 tag in the Dockerfile
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Debug (OIDC)
-        uses: github/actions-oidc-debugger@main
-        with:
-          audience: sts.amazonaws.com
 
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
