@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>dotnet-ecs-demo</id>
+    <version>1.0.0</version>
+    <authors>Demo</authors>
+    <owners>Demo</owners>
+    <description>Sample ASP.NET .NET Framework 4.7.2 IIS application for ECS Fargate.</description>
+  </metadata>
+</package>

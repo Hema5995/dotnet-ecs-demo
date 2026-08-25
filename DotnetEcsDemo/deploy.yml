@@ -1,0 +1,60 @@
+name: Build and Deploy to ECS
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  id-token: write   # required for OIDC auth to AWS
+  contents: read
+
+env:
+  ECS_CLUSTER: aspnet-cluster
+  ECS_SERVICE: aspnet-service
+  CONTAINER_NAME: dotnet-ecs-demo   # must exactly match the container name in task-definition.json
+
+jobs:
+  deploy:
+    runs-on: windows-2019   # must match the ltsc2019 tag in the Dockerfile
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push Docker image
+        env:
+          ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          # Builds using the multi-stage Dockerfile at the repo root:
+          #   Stage 1 (sdk image) restores + msbuild's DotnetEcsDemo/DotnetEcsDemo.csproj
+          #   Stage 2 (aspnet runtime image) only keeps the compiled publish output
+          docker build -t $env:ECR_REGISTRY/$env:ECR_REPOSITORY:$env:IMAGE_TAG .
+          docker push $env:ECR_REGISTRY/$env:ECR_REPOSITORY:$env:IMAGE_TAG
+          echo "IMAGE=$env:ECR_REGISTRY/$env:ECR_REPOSITORY:$env:IMAGE_TAG" >> $env:GITHUB_ENV
+
+      - name: Fill in new image ID in task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ env.IMAGE }}
+
+      - name: Deploy to ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
