@@ -13,16 +13,7 @@ env:
   ECS_SERVICE: aspnet-service
   CONTAINER_NAME: aspnet-container   # must exactly match the container name in task-definition.json
 
-jobs:
-  oidc-debug:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Debug (OIDC)
-        uses: github/actions-oidc-debugger@main
-        with:
-          audience: sts.amazonaws.com
-    
+jobs:   
   deploy:
     runs-on: windows-2022   # must match the ltsc2019 tag in the Dockerfile
     steps:
