@@ -10,7 +10,7 @@ RUN nuget restore DotnetEcsDemo/DotnetEcsDemo.csproj
 
 # Now copy the rest of the source and build/publish it
 COPY . .
-RUN msbuild DotnetEcsDemo.sln /t:DotnetEcsDemo /p:Configuration=Release /p:DeployOnBuild=true /p:WebPublishMethod=FileSystem /p:publishUrl=C:\publish
+RUN msbuild DotnetEcsDemo.sln /t:DotnetEcsDemo /p:Configuration=Release /p:DeployOnBuild=true /p:WebPublishMethod=FileSystem /p:publishUrl=C:/publish
 
 # ---- Stage 2: Runtime ----
 # This is the actual image that runs in ECS - only the compiled output
