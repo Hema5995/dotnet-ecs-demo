@@ -40,7 +40,7 @@ jobs:
       - name: Build and Push Docker image
         env:
           ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
-          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+          ECR_REPOSITORY: aspnet-demo
           IMAGE_TAG: ${{ github.sha }}
         run: |
           # Builds using the multi-stage Dockerfile at the repo root:
