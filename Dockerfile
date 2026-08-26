@@ -11,7 +11,7 @@ COPY . .
 RUN nuget restore DotnetEcsDemo.sln
 
 # 3. Use DeployOnBuild/WebPublishMethod to extract the fully compiled website (not just raw bins)
-RUN msbuild DotnetEcsDemo/DotnetEcsDemo.csproj /p:Configuration=Release /p:Platform="AnyCPU" /p:DeployOnBuild=true /p:WebPublishMethod=FileSystem /p:publishUrl=C:/publish /p:PackageAsSingleFile=false
+RUN msbuild DotnetEcsDemo.sln /p:Configuration=Release /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:publishUrl=C:/publish
 
 # ---- Stage 2: Runtime ----
 # This is the actual image that runs in ECS - only the compiled output
