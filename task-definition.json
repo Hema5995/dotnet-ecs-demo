@@ -1,9 +1,9 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-1:435059220002:task-definition/aspnet-task:1",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:435059220002:task-definition/aspnet-task:3",
     "containerDefinitions": [
         {
             "name": "aspnet-container",
-            "image": "435059220002.dkr.ecr.us-east-1.amazonaws.com/aspnet-demo:latest",
+            "image": "435059220002.dkr.ecr.us-east-1.amazonaws.com/aspnet-demo:3d42ededc7b8d011384296526225fb481f130e9a",
             "cpu": 0,
             "portMappings": [
                 {
@@ -16,10 +16,8 @@
             ],
             "essential": true,
             "environment": [],
-            "environmentFiles": [],
             "mountPoints": [],
             "volumesFrom": [],
-            "ulimits": [],
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
@@ -37,7 +35,7 @@
     "taskRoleArn": "arn:aws:iam::435059220002:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::435059220002:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 1,
+    "revision": 3,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -76,14 +74,14 @@
     ],
     "runtimePlatform": {
         "cpuArchitecture": "X86_64",
-        "operatingSystemFamily": "WINDOWS_SERVER_2019_CORE"
+        "operatingSystemFamily": "WINDOWS_SERVER_2022_CORE"
     },
     "requiresCompatibilities": [
         "FARGATE"
     ],
     "cpu": "1024",
     "memory": "2048",
-    "registeredAt": "2026-08-25T11:12:00.298Z",
+    "registeredAt": "2026-08-26T11:37:53.028Z",
     "registeredBy": "arn:aws:iam::435059220002:root",
     "enableFaultInjection": false,
     "tags": []
