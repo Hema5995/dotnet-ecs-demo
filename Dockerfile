@@ -1,5 +1,5 @@
 # ---- Stage 1: Build ----
-FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2022 AS build
+FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2019 AS build
 WORKDIR C:/src
 
 # Copy all source files and restore
@@ -10,7 +10,7 @@ RUN nuget restore DotnetEcsDemo.sln
 RUN msbuild DotnetEcsDemo.sln /p:Configuration=Release /p:Platform="Any CPU"
 
 # ---- Stage 2: Runtime ----
-FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2022
+FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019
 WORKDIR C:/inetpub/wwwroot
 
 # Clear default IIS website contents
