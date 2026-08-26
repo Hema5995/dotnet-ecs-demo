@@ -1,7 +1,7 @@
 # ---- Stage 1: Build ----
 # Uses the .NET Framework SDK image (has MSBuild + NuGet) to compile the
 # Web Application project into a deployable output.
-FROM ://microsoft.com AS build
+FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2022 AS build
 WORKDIR C:/src
 
 # Copy just the csproj first so NuGet restore is cached across builds
