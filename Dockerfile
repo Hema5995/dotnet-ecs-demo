@@ -5,12 +5,10 @@ FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2022 AS bu
 WORKDIR C:/src
 
 # Copy just the csproj first so NuGet restore is cached across builds
-COPY DotnetEcsDemo/DotnetEcsDemo.csproj DotnetEcsDemo/
-RUN nuget restore DotnetEcsDemo/DotnetEcsDemo.csproj
+COPY ..
+RUN nuget restore DotnetEcsDemo.sln
 
-# Now copy the rest of the source and build/publish it
-COPY . .
-RUN msbuild DotnetEcsDemo.sln /p:Configuration=Release /p:VisualStudioVersion=17.0 /p:DeployOnBuild=true /p:WebPublishMethod=FileSystem /p:publishUrl=C:/publish
+RUN msbuild DotnetEcsDemo.sln /p:Configuration=Release /p:OutputPath=C:/publish
 
 # ---- Stage 2: Runtime ----
 # This is the actual image that runs in ECS - only the compiled output
