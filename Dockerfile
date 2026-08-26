@@ -5,10 +5,13 @@ FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2022 AS bu
 WORKDIR C:/src
 
 # Copy just the csproj first so NuGet restore is cached across builds
-COPY ..
+COPY . .
+
+# 2. Restore dependencies using the solution file now that it exists
 RUN nuget restore DotnetEcsDemo.sln
 
-RUN msbuild DotnetEcsDemo.sln /p:Configuration=Release /p:OutputPath=C:/publish
+# 3. Use DeployOnBuild/WebPublishMethod to extract the fully compiled website (not just raw bins)
+RUN msbuild DotnetEcsDemo.sln /p:Configuration=Release /p:DeployOnBuild=true /p:DeployTarget=WebPublish /p:WebPublishMethod=FileSystem /p:publishUrl=C:\publish
 
 # ---- Stage 2: Runtime ----
 # This is the actual image that runs in ECS - only the compiled output
