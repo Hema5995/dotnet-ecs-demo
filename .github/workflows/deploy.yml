@@ -43,13 +43,10 @@ jobs:
           ECR_REPOSITORY: aspnet-demo
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          # Builds using the multi-stage Dockerfile at the repo root:
-          #   Stage 1 (sdk image) restores + msbuild's DotnetEcsDemo/DotnetEcsDemo.csproj
-          #   Stage 2 (aspnet runtime image) only keeps the compiled publish output
-          docker build -t $env:ECR_REGISTRY/$env:ECR_REPOSITORY:$env:IMAGE_TAG .
-          docker push $env:ECR_REGISTRY/$env:ECR_REPOSITORY:$env:IMAGE_TAG
-          
-          echo "IMAGE=$env:ECR_REGISTRY/$env:ECR_REPOSITORY:$env:IMAGE_TAG" >> $env:GITHUB_ENV
+          docker build -t "${{ steps.ecr-login.outputs.registry }}/aspnet-demo:${{ github.sha }}" .
+          docker push "${{ steps.ecr-login.outputs.registry }}/aspnet-demo:${{ github.sha }}"
+
+          echo "IMAGE=${{ steps.ecr-login.outputs.registry }}/aspnet-demo:${{ github.sha }}" >> $env:GITHUB_ENV
       
       - name: Fill in new image ID in task definition
         id: task-def
@@ -57,7 +54,7 @@ jobs:
         with:
           task-definition: task-definition.json
           container-name: ${{ env.CONTAINER_NAME }}
-          image: ${{ env. IMAGE }}
+          image: ${{ env.IMAGE }}
 
       - name: Deploy to ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
