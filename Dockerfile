@@ -11,12 +11,12 @@ COPY . .
 RUN nuget restore DotnetEcsDemo.sln
 
 # 3. Use DeployOnBuild/WebPublishMethod to extract the fully compiled website (not just raw bins)
-RUN msbuild DotnetEcsDemo.sln /p:Configuration=Release /p:DeployOnBuild=true /p:DeployTarget=WebPublish /p:WebPublishMethod=FileSystem /p:publishUrl=C:/publish
+RUN msbuild DotnetEcsDemo/DotnetEcsDemo.csproj /p:Configuration=Release /p:Platform="AnyCPU" /p:DeployOnBuild=true /p:WebPublishMethod=FileSystem /p:publishUrl=C:/publish /p:PackageAsSingleFile=false
 
 # ---- Stage 2: Runtime ----
 # This is the actual image that runs in ECS - only the compiled output
 # gets copied in, not the source, csproj, or build tools.
-FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2022 AS build
+FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2022
 WORKDIR C:/inetpub/wwwroot
 
 # Clear IIS's default sample site content, then copy the published app
