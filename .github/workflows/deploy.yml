@@ -36,16 +36,20 @@ jobs:
       - name: Login to ECR
         id: ecr-login
         uses: aws-actions/amazon-ecr-login@v2
-
       - name: Build and Push Docker image
         env:
           ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
           ECR_REPOSITORY: aspnet-demo
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t "${{ steps.ecr-login.outputs.registry }}/aspnet-demo:${{ github.sha }}" .
-          docker push "${{ steps.ecr-login.outputs.registry }}/aspnet-demo:${{ github.sha }}"
+          # Build with commit SHA and latest tags
+          docker build -t "${{ steps.ecr-login.outputs.registry }}/aspnet-demo:${{ github.sha }}" -t "${{ steps.ecr-login.outputs.registry }}/aspnet-demo:latest" .
 
+          # Push both tags to ECR
+          docker push "${{ steps.ecr-login.outputs.registry }}/aspnet-demo:${{ github.sha }}"
+          docker push "${{ steps.ecr-login.outputs.registry }}/aspnet-demo:latest"
+
+          # Set image env for subsequent steps
           echo "IMAGE=${{ steps.ecr-login.outputs.registry }}/aspnet-demo:${{ github.sha }}" >> $env:GITHUB_ENV
       
       - name: Fill in new image ID in task definition
