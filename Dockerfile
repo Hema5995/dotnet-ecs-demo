@@ -20,6 +20,5 @@ RUN powershell -Command "Remove-Item -Recurse -Force C:/inetpub/wwwroot/*"
 COPY --from=build C:/src/DotnetEcsDemo .
 
 # Optional cleanup: Remove raw C# source files and obj temp folder from runtime image
-RUN powershell -Command "Remove-Item -Recurse -Force -Include *.cs,*.csproj,*.user,obj -Path C:/inetpub/wwwroot/* -ErrorAction SilentlyContinue"
 
 EXPOSE 80
