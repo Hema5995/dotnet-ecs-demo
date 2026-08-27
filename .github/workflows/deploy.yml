@@ -20,13 +20,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: TEMP DEBUG - check secret length
-        run: |
-          Write-Host "AWS_ROLE_ARN length: $($env:SECRET_VAL.Length)"
-          Write-Host "AWS_ROLE_ARN value: [$env:SECRET_VAL]"
-        env:
-          SECRET_VAL: ${{ secrets.AWS_ROLE_ARN }}
-
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
