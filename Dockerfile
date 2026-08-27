@@ -4,10 +4,10 @@ WORKDIR C:/src
 
 # Copy all source files and restore
 COPY . .
-RUN nuget restore DotnetEcsDemo.sln
+RUN nuget restore DotnetEcsDemo\DotnetEcsDemo.csproj
 
-# Standard compilation
-RUN msbuild DotnetEcsDemo.sln /p:Configuration=Release /p:Platform="Any CPU"
+# Build the project directly (not the .sln) to avoid solution-configuration skip issues
+RUN msbuild DotnetEcsDemo\DotnetEcsDemo.csproj /p:Configuration=Release /p:Platform="AnyCPU"
 
 # DEBUG: list everything under the project folder after build
 RUN powershell -Command "Get-ChildItem -Recurse C:/src/DotnetEcsDemo | Select-Object FullName"
