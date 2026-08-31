@@ -9,7 +9,7 @@ RUN nuget restore DotnetEcsDemo\DotnetEcsDemo.csproj
 # Build the project directly (not the .sln) to avoid solution-configuration skip issues
 RUN msbuild DotnetEcsDemo\DotnetEcsDemo.csproj /p:Configuration=Release /p:Platform="AnyCPU"
 
-# ---- Stage 2: Runtime ----
+# ---- Stage 2: Runtime -----
 FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2022
 WORKDIR C:/inetpub/wwwroot
 
