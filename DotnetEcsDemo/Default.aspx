@@ -6,10 +6,9 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <h1>.NET Framework 4.7.2 - ECS Fargate Demo</h1>
+        <h1>GitHub Action Demo with ECS Fargate</h1>
         <p>Application is running successfully through IIS.</p>
         <p>Environment: AWS ECS Fargate</p>
-        <p>Health check: /</p>
     </form>
 </body>
 </html>
